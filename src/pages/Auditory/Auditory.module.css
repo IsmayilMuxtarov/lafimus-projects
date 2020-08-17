@@ -1,0 +1,71 @@
+body{
+  font-family: 'Diane';
+}
+.content{
+  display: grid;
+  width: 100vw;
+  height: 92vh;
+
+  grid-template-rows: 2fr 9fr;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.logos{
+  display: flex;
+  justify-content: space-between;
+   /*margin-right: 2rem;*/
+}
+.logos>ion-col{
+  /*display: flex;*/
+  /*justify-content: space-between;*/
+   margin: 1.5rem;
+}
+
+.content_auditory{
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+.logo {
+  width: 6rem;
+  height: 6rem;
+  margin-bottom: 15px;
+}
+.active{
+  color: green;
+  transform: scale(1,1);
+  text-shadow: 3px 3px 3px grey;
+}
+.auditory_slogan{
+  display: flex;
+  top:2rem;
+  justify-content: center;
+  align-items: center;
+}
+.auditory_slogan_text{
+  font-size: 3rem;
+  font-family: 'diane';
+  color: #3880FF;
+}
+.font{
+  font-family: Diane;
+}
+.header_area{
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+.header_text{
+  position: absolute;;
+  width: 100vw !important;
+
+}
+.header_back_arrow{
+  z-index: 100;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 0px 1rem;
+  color: #f63131;
+
+}

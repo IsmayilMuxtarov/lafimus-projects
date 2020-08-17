@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WatchLearn</string>
+    <string name="title_activity_main">WatchLearn</string>
+    <string name="package_name">com.laf_vid.com</string>
+    <string name="custom_url_scheme">com.laf_vid.com</string>
+    <string name="server_client_id">39539568128-emm9cp2hguhrr2u36ijbvvvopota3t9g.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">562069084669756</string>
+    <string name="fb_login_protocol_scheme">fb562069084669756</string>
+</resources>

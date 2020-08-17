@@ -1,20 +1,70 @@
 {
-  "name": "video-app",
+  "name": "com.laf_vid.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@capacitor/android": "^2.2.0",
+    "@capacitor/core": "2.2.0",
+    "@capacitor/ios": "^2.2.0",
+    "@codetrix-studio/capacitor-google-auth": "^2.1.1",
+    "@ionic-native/core": "^5.27.0",
+    "@ionic-native/ionic-webview": "^5.27.0",
+    "@ionic-native/market": "^5.27.0",
+    "@ionic-native/native-page-transitions": "^5.27.0",
+    "@ionic-native/screen-orientation": "^5.27.0",
+    "@ionic-native/web-intent": "^5.27.0",
+    "@ionic/lab": "^3.1.7",
+    "@ionic/pwa-elements": "^3.0.1",
+    "@ionic/react": "^5.3.1",
+    "@ionic/react-hooks": "0.0.8",
+    "@ionic/react-router": "^5.3.1",
+    "@rdlabo/capacitor-facebook-login": "^2.0.3",
+    "@testing-library/jest-dom": "^5.11.2",
+    "@testing-library/react": "^10.4.7",
+    "@testing-library/user-event": "^12.0.17",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.5",
+    "axios": "^0.19.2",
+    "capacitor-admob": "^0.1.0",
+    "com-darryncampbell-cordova-plugin-intent": "^2.0.0",
+    "com.telerik.plugins.nativepagetransitions": "^0.7.0",
+    "cordova": "^9.0.0",
+    "cordova-launch-review": "^3.1.1",
+    "cordova-plugin-ionic-webview": "^5.0.0",
+    "cordova-plugin-market": "^1.2.0",
+    "cordova-plugin-screen-orientation": "^3.0.2",
+    "es6-promise-plugin": "^4.2.2",
+    "gh-pages": "^3.1.0",
+    "history": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-facebook-login": "^4.1.1",
+    "react-icons": "^3.10.0",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cap-add-android": "npx cap add android",
+    "ionic-build": "ionic build",
+    "ionic-serve": "ionic serve",
+    "cap-run-android": "ionic cap run android",
+    "cap-open-android": "npx cap open android",
+    "cap-sync-android": "npx cap sync",
+    "cap-copy-android": "ionic cap copy android",
+    "cap-live-android": "ionic capacitor run android -l --external",
+    "cap-run-Ios": "ionic cap run ios",
+    "cap-open-Ios": "npx cap open ios",
+    "cap-sync-Ios": "npx cap sync",
+    "cap-copy-Ios": "ionic cap copy ios",
+    "cap-live-Ios": "ionic capacitor run ios -l --external"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +80,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^2.2.0"
   }
 }

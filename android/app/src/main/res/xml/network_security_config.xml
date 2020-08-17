@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+  <network-security-config>
+  <base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+      <!--        <certificates src="@raw/trusted_roots"/>-->
+      <certificates src="system"/>
+    </trust-anchors>
+  </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+      <domain includeSubdomains="true">localhost</domain>
+      <domain includeSubdomains="true">http://localhost:8100/</domain>
+      <domain includeSubdomains="true">http://localhost:8101/</domain>
+      <domain includeSubdomains="true">https://video.shahin-electronics.com/</domain>
+
+    </domain-config>
+  </network-security-config>

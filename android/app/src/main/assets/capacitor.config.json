@@ -1,0 +1,21 @@
+{
+  "appId": "com.laf_vid.com",
+  "appName": "Watch Learn",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "build",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "39539568128-emm9cp2hguhrr2u36ijbvvvopota3t9g.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    }
+  },
+  "cordova": {}
+}
