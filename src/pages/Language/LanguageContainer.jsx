@@ -2,9 +2,18 @@ import React, {useEffect, useState} from 'react';
 import style from './Language.module.css';
 import flag from '../../assets/img/earth.png'
 import {
-    IonAlert, IonCol, IonContent, IonFooter,
-    IonHeader, IonImg, IonLabel, IonList,
-    IonPage,IonRow, IonText, IonTitle, IonToolbar
+    IonAlert,
+    IonButton,
+    IonCol,
+    IonContent, IonFooter,
+    IonHeader, IonIcon,
+    IonImg,
+    IonLabel,
+    IonList,
+    IonPage,
+    IonRow, IonText,
+    IonTitle,
+    IonToolbar
 } from "@ionic/react";
 import se from '../../assets/img/se.png'
 import tr from '../../assets/img/tr.png'
@@ -28,20 +37,26 @@ import {withRouter} from "react-router";
 import {AiOutlineInfoCircle, AiOutlineShareAlt, AiOutlineStar, FiGrid} from "react-icons/all";
 import {Market} from '@ionic-native/market';
 import {WebIntent} from '@ionic-native/web-intent'
-import { Plugins } from '@capacitor/core';
+import { Plugins, AppState } from '@capacitor/core';
 
 const { App } = Plugins;
 
 
-const Language = () => {
+const LanguageContainer = ({match}) => {
+    App.addListener('backButton', (e) => {
+        // return false
+        // e.preventDefault()
+// alert('ssdsd')
 
+        window.location.assign('/language')
+
+    });
     const [showAlert1, setShowAlert1] = useState(false);
-    const [showAlert2, setShowAlert2] = useState(false);
     const [language, setLanguage] = useState(null)
     const [apiKey, setApiKey] = useState(null)
     const [selectedLang, setSelectedLang] = useState(null)
 
-    // let url=JSON.stringify(match)
+    let url=JSON.stringify(match)
     // alert(url)
 
     const getLanguages = async (apiKey) => {
@@ -49,24 +64,21 @@ const Language = () => {
         if (data.resultCode === 0) {
             setLanguage(data.data)
         } else {
-            alert('Internet Connection Problem')
+            alert('LangApi something is wrong')
         }
     }
-
     const getApiKey = async (key) => {
         let data = await readFromStorage(key)
         if (data) {
             setApiKey(data.API_KEY)
         }
     }
-
-    const loadSavedLang = async (key) => {
+    const loadLang = async (key) => {
         let data = await readFromStorage(key)
         if (data) {
             setSelectedLang(data)
         }
     }
-
     useEffect(() => {
         if (apiKey) {
             getLanguages(apiKey)
@@ -74,23 +86,14 @@ const Language = () => {
             getApiKey('api_key')
         }
     }, [apiKey])
-
     let history = useHistory()
-
     useEffect(() => {
         if (selectedLang) {
             saveToStorage('language', selectedLang)
         } else {
-            loadSavedLang('language')
+            loadLang('language')
         }
     }, [selectedLang])
-
-    useEffect(()=>{
-        App.addListener('backButton', (e) => {
-            setShowAlert2(true)
-        });
-    },[])
-
     let flagArray = [
         {'name': 'SE', 'url': se},
         {'name': 'TR', 'url': tr},
@@ -104,27 +107,11 @@ const Language = () => {
         {'name': 'JP', 'url': jp},
         {'name': 'FR', 'url': fr},
         {'name': 'EN', 'url': en}]
-
-    // let [flagUrl, setFlagUrl] = useState()
-
-    // const flagSort = (key) => {
-    //     console.log(flagArray[1]`.${key}`)
-    //     return flagArray[1]`.${key}`
-    // }
-
-
-
-    let webIntent = WebIntent
-
-    const options = {
-        action: webIntent.ACTION_SEND,
-        type: "text/plain",
-        extras: {
-            'android.intent.extra.TEXT': "https://play.google.com/store/apps/details?id=com.laf_vid.com"
-        }
-    }
-
+    let [flagUrl, setFlagUrl] = useState()
     let languages;
+    const flagSort = (key) => {
+        return flagArray[1]`.${key}`
+    }
     if (language) {
         languages = language.map((lang, key) => {
             let code = lang.name
@@ -158,6 +145,16 @@ const Language = () => {
         })
     }
 
+
+    let webIntent = WebIntent
+
+    const options = {
+        action: webIntent.ACTION_SEND,
+        type: "text/plain",
+        extras: {
+            'android.intent.extra.TEXT': "https://play.google.com/store/apps/details?id=com.laf_vid.com"
+        }
+    }
     return (
 
         <IonPage>
@@ -177,33 +174,6 @@ const Language = () => {
                     subHeader={''}
                     message={'Will Soon..'}
                     buttons={['OK']}
-                />
-                <IonAlert
-                    isOpen={showAlert2}
-                    onDidDismiss={() => setShowAlert2(false)}
-                    cssClass='my-custom-class'
-                    header={''}
-                    subHeader={''}
-                    message={'Are you sure?'}
-                    buttons={[
-                        {
-                            text: 'Cancel',
-                            role: 'cancel',
-                            cssClass: 'secondary',
-                            handler: () => {
-                                // console.log('Confirm Cancel');
-                                window.location.assign('/language')
-
-                            }
-                        },
-                        {
-                            text: 'Ok',
-                            handler: () => {
-                                // console.log('Confirm Ok');
-                                App.exitApp()
-                            }
-                        }
-                    ]}
                 />
                 <IonCol className={style.content}>
                     <IonRow className='ion-justify-content-center'>
@@ -290,4 +260,4 @@ const Language = () => {
     );
 }
 
-export default withRouter(Language);
+export default withRouter(LanguageContainer);

@@ -4,12 +4,10 @@ import {
     IonButton,
     IonCol,
     IonContent, IonFooter,
-    IonHeader,
-    IonImg, IonLabel,
+    IonHeader,  IonImg,
     IonList, IonLoading,
-    IonPage,
-    IonRow,
-    IonTitle, IonToolbar, useIonViewDidEnter, useIonViewDidLeave, useIonViewWillEnter, useIonViewWillLeave
+    IonPage,  IonRow,
+    IonTitle, IonToolbar
 } from "@ionic/react";
 import {readFromStorage, saveToStorage} from "../../api/deviceStorageApi";
 import {useHistory} from "react-router";
@@ -26,13 +24,12 @@ let mapStateToProps = (state) => ({
 const { App } = Plugins;
 
 const VideoGalary = React.memo((props) => {
-    App.addListener('backButton', (e) => {
-        // return false
-        // e.preventDefault()
-// alert('ssdsd')
 
+    App.addListener('backButton', (e) => {
         window.location.assign('/auditory')
-    });// debugger
+        // setCurrentPage(2)
+    });
+
     let screenOrientation = ScreenOrientation
     screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT)
 
@@ -40,11 +37,13 @@ const VideoGalary = React.memo((props) => {
     const [apiKey, setApiKey] = useState()
     const [auditoryId, setAuditoryId] = useState()
     const [languageId, setLanguage] = useState()
-    const [currentPage, setCurrentPage] = useState(2)
+    const [currentPage, setCurrentPage] = useState(1)
     const [showLoading, setShowLoading] = useState(false)
+    const [map,setMap] =useState()
 
     let history = useHistory()
-    const getSavedData = async () => {
+
+const getSavedData = async () => {
         let data = await readFromStorage('api_key')
         if (data) {
             setApiKey(data.API_KEY)
@@ -57,16 +56,38 @@ const VideoGalary = React.memo((props) => {
         if (data2) {
             setAuditoryId(data2)
         }
+        let data3 = await readFromStorage('selected_video')
+        if (data3) {
+            setMap(data3)
+        }
+        let data4 = await readFromStorage('last_page_size')
+        if (data4) {
+            // alert('klsksk')
+            setCurrentPage(data4)
+        }
     }
+// const saveVideoId= async ()=>{
+//        let data=await saveToStorage('video_id')
+//     if(data){
+//         alert(data)
+//     }
+// }
 
     useEffect(() => {
         getSavedData()
-        // setFlag(true)
+
     }, [])
+
+    useEffect(()=>{
+        if(map){
+            // alert('ok')
+
+        }
+    },[map])
 
     useEffect(() => {
         // debugger
-        if (auditoryId && languageId && apiKey) {
+        if ((auditoryId && languageId && apiKey )&& (currentPage==1)) {
             props.getVideos(auditoryId, languageId, 1, apiKey)
         } else {
             console.log(videos)
@@ -76,54 +97,60 @@ const VideoGalary = React.memo((props) => {
 
     useEffect(() => {
         setVideos(props.videos)
+
+        console.log(props.videos)
     }, [props.videos])
 
     useEffect(() => {
         setShowLoading(true)
-        // return ()=>{
-        //     alert('kskks')
-        // }
+
+        // debugger
+        if(currentPage!=1){
+            // alert('lll')
+            saveToStorage('last_page_size',currentPage)
+            props.getVideos(auditoryId, languageId, currentPage, apiKey)
+        }
     }, [currentPage])
 
 
-    useEffect(() => {
-        // setShowLoading(true)
-        // alert('1st')
+    // useEffect(() => {
+    //     // setShowLoading(true)
+    //     // alert('1st')
+    //
+    //     // return ()=>{alert('last')}
+    // }, [])
 
-        // return ()=>{alert('last')}
-    }, [])
-    const addWCount= async (video_id, apikey)=>{
+
+    const addWatchCnt= async (video_id, apikey)=>{
         let response= await addWatchCount.addWatch(video_id,apikey)
         if(response){
-            alert(JSON.stringify(response))
+            // alert(JSON.stringify(response))
+            window.location.assign('/videoplayer')
         }
     }
     let videoByThree = videos.map((video, key) => (
         <IonCol key={key}
                 size='6'
                 onClick={ () => {
-                    // debugger
-                    // alert(video.id)
-                    addWCount(video.id,apiKey)
-                    //Apiye videoId gonderilir   video.id
-                    //video/watchCount/?id=de
-                    // debugger
-
-
+                    saveToStorage('selected_video', video.id)
+                    addWatchCnt(video.id,apiKey)
+                    // saveToStorage('video_id', video.id)
+                    // console.log(video)
                 }}>
+            {/*<a id={video.id}></a>*/}
+            {/*<a href={`#`+video.id}></a>*/}
             <IonImg
                 className={style.video_snippet}
                 onClick={() => {
-                    saveToStorage('selected_video', video.id)
-                    window.location.assign('/videoplayer')
-
                     // history.push('/videoplayer')
                 }}
                 src={`http://img.youtube.com/vi/${video.youtube_id}/0.jpg`}
             >
             </IonImg>
             {/*views and */}
-            <IonLabel>455 <span> views</span></IonLabel>
+            <p className={style.views}>Viewed<span> {video.id>10000? video.look_count+(video.id-5000) :video.id }</span></p>
+            <p className={style.video_name}>{video.name}</p>
+
         </IonCol>
     ))
     // ionViewDidEnter() {
@@ -180,13 +207,11 @@ const VideoGalary = React.memo((props) => {
                             {videoByThree}
                         </IonRow>
                     </IonList>
-
                 </div>
                 <IonButton
                     onClick={() => {
                         setCurrentPage(currentPage => currentPage + 1)
-                        props.getVideos(auditoryId, languageId, currentPage, apiKey)
-
+                        // props.getVideos(auditoryId, languageId, currentPage, apiKey)
                     }}
                     expand='full'
                     shape='round'
@@ -197,8 +222,6 @@ const VideoGalary = React.memo((props) => {
                         More
                     </p>
                 </IonButton>
-                {/*</IonCol>*/}
-
             </IonContent>
             <IonFooter>
                 <div style={{display: "flex", alignItems: "center", padding: "0px 1rem"}}>
@@ -216,36 +239,6 @@ const VideoGalary = React.memo((props) => {
                     </IonRow>
                 </div>
             </IonFooter>
-            {/*<IonFooter>*/}
-                {/*<IonRow>*/}
-                {/*    <IonCol className='ion-text-center ion-no-margin ion-no-padding'>*/}
-                {/*        <IonButton*/}
-                {/*            expand='full'*/}
-                {/*            shape='round'*/}
-                {/*            className='ion-no-padding  ion-text-center'*/}
-                {/*            href='/auditory'*/}
-                {/*            onClick={() => {*/}
-                {/*                props.eraseVideos()*/}
-                {/*            }}>*/}
-                {/*            Prev*/}
-                {/*        </IonButton>*/}
-                {/*    </IonCol>*/}
-
-                    {/*<IonCol className='ion-text-center ion-no-margin ion-no-padding'>*/}
-                    {/*    <IonButton*/}
-                    {/*        expand='full'*/}
-                    {/*        shape='round'*/}
-                    {/*        href='/videoplayer'*/}
-                    {/*        className='ion-no-padding ion-text-center'*/}
-                    {/*        // onClick={() => {*/}
-                    {/*        //     history.push('/videoplayer')*/}
-                    {/*        // }}*/}
-                    {/*    >*/}
-                    {/*        Next*/}
-                    {/*    </IonButton>*/}
-                    {/*</IonCol>*/}
-                {/*</IonRow>*/}
-            {/*</IonFooter>*/}
         </IonPage>
     );
 })

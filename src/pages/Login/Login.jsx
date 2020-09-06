@@ -15,17 +15,20 @@ import {
     IonTitle,
     IonToolbar,
     IonImg,
-    IonHeader
+    IonHeader, IonAlert
 } from "@ionic/react";
 import {readFromStorage, saveToStorage} from "../../api/deviceStorageApi";
 import {authApi} from "../../api/appApi";
 import {useHistory} from "react-router";
 import "@codetrix-studio/capacitor-google-auth";
-import {Plugins} from '@capacitor/core';
 import * as axios from "axios";
+import { Plugins, AppState } from '@capacitor/core';
+
+const { App } = Plugins;
 
 const Login = (props) => {
 
+    const [showAlert1, setShowAlert1] = useState(false);
     const [apiKey, setApiKey] = useState('')
     const [showLoading, setShowLoading] = useState(false)
     let [countryId, setStoredCountry] = useState(null)
@@ -37,10 +40,11 @@ const Login = (props) => {
 
     const googleSignIn = async () => {
         setShowLoading(true)
+
         let googleData = await Plugins.GoogleAuth.signIn()
         if (googleData) {
             setShowLoading(true)
-            alert(JSON.stringify(googleData))
+            // alert(JSON.stringify(googleData))
             let email = googleData.email
             let password = googleData.email
             let data = await authApi.registerSosial(email, password, countryId, googleId)
@@ -119,22 +123,12 @@ const Login = (props) => {
             // getStoredCountry('country_id')
         }
     }, [apiKey])
-    // useIonViewDidEnter(() => {
-    //     console.log('ionViewDidEnter event fired');
-    // });
-    //
-    // useIonViewDidLeave(() => {
-    //     console.log('ionViewDidLeave event fired');
-    // });
-    // //her defe cagirilir
-    //
-    // useIonViewWillEnter(() => {
-    //     console.log('ionViewWillEnter event fired');
-    // });
-    //
-    // useIonViewWillLeave(() => {
-    //     console.log('ionViewWillLeave event fired');
-    // });
+
+    useEffect(()=>{
+        App.addListener('backButton', (e) => {
+            setShowAlert1(true)
+        });
+    },[])
     return (
         <IonPage>
             <IonContent>
@@ -144,6 +138,33 @@ const Login = (props) => {
                     onDidDismiss={() => setShowLoading(false)}
                     message={'Please wait...'}
                     duration={2000}
+                />
+                <IonAlert
+                    isOpen={showAlert1}
+                    onDidDismiss={() => setShowAlert1(false)}
+                    cssClass='my-custom-class'
+                    header={''}
+                    subHeader={''}
+                    message={'Are you sure?'}
+                    buttons={[
+                        {
+                            text: 'Cancel',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: () => {
+                                // console.log('Confirm Cancel');
+                                window.location.assign('/login')
+
+                            }
+                        },
+                        {
+                            text: 'Ok',
+                            handler: () => {
+                                // console.log('Confirm Ok');
+                                App.exitApp()
+                            }
+                        }
+                    ]}
                 />
                 {/*<IonHeader>*/}
                 {/*    <IonToolbar>*/}

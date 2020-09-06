@@ -29,16 +29,6 @@
   /*vertical-align: unset;*/
   transition: 0.5s all;
 }
-/*.more_button :hover{*/
-/*  transform: scale(1.5 1.5);*/
-/*}*/
-
-/*div > ion-content > div > ion-list > ion-row > ion-col:nth-child(1){*/
-/*  !*display: flex;*!*/
-/*  !*justify-content: space-around;*!*/
-/*  margin-right: 0px;*/
-/*}*/
-
 .font{
   font-family: Diane;
 }
@@ -47,4 +37,18 @@
   flex-flow: row nowrap;
   color: #f63131;
   height: 100%;
+}
+.views{
+  font-size: small;
+  font-weight: bolder;
+  margin: 0px;
+  padding: 5px 0px 0px 0px ;
+}
+.video_name{
+  font-size: small;
+
+  margin: 0px;
+  width: auto;
+  height: 2rem;
+  overflow: hidden;
 }

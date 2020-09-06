@@ -1,6 +1,5 @@
 import React from 'react';
-import {authApi, authAPI} from "../api/appApi";
-// import {stopSubmit} from "redux-form";
+import {authApi} from "../api/appApi";
 
 const SET_USER_DATA='SET_USER_DATA';
 export const setUserData=(id,email,login,isAuth)=>{
@@ -28,12 +27,6 @@ let loginReducer = (state = initialState, action) => {
                 ...action.payload,
                 isAuth: action.payload.isAuth
             }
-
-        // case IS_LOADING:
-        //     return {
-        //         ...state,
-        //         isLoadingStatus:action.isLoadingStatus
-        //     }
         default :
             return state;
     }
@@ -49,22 +42,6 @@ export const authMe=()=>{
         }
     }
 }
-export const loginMe=(email,password,rememberMe)=>{
-    return async (dispatch)=>{
-        let response= await authApi.login(email,password,rememberMe);
-        if(response.resultCode===0){
-            dispatch(authMe());
-        }else{
-            // dispatch(stopSubmit('login', {_error:'Something is wrong'}))
-        }
-    }
-}
-export const logOutMe=()=>{
-    return async (dispatch)=>{
-        let response= await authApi.logOut();
-        if(response.resultCode===0){
-            dispatch(setUserData(null, null, null,false))
-        }
-    }
-}
+
+
 export default loginReducer;

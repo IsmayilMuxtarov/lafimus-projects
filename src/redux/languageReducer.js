@@ -1,5 +1,6 @@
 import React from 'react';
 import {countryApi} from "../api/appApi";
+// import img1 from '../assets/img/slide_photo.png'
 
 const SET_COUNTRIES = 'SET_COUNTRIES';
 export const setCountries = (countries) => {
@@ -48,6 +49,9 @@ let languageReducer = (state = initialState, action) => {
                 selectedCountry: action.selectedCountry
             }
         }
+        // case SAVE_DATA_LOCAL:{
+        //    setCountryStorage(action.payload.countryKey, action.payload.countryValue)
+        // }
         default :
             return state;
     }
@@ -63,7 +67,7 @@ export const getCountryList=()=>
             // alert(response.data)
             dispatch(setCountries(response.data))
         }else (
-            alert('Internet Connection problem..')
+            alert('sorry API problem..')
         )
     }
 }
@@ -75,4 +79,4 @@ export const setSelectedCountry=(countryName)=>{
 
 
 
-export default languageReducer;
+export default countryReducer;

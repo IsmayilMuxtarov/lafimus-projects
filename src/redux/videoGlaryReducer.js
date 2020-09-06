@@ -1,6 +1,5 @@
 import React from 'react';
-import {authApi, authAPI, videoApi} from "../api/appApi";
-// import {stopSubmit} from "redux-form";
+import {videoApi} from "../api/appApi";
 
 const SET_VIDEO_DATA = 'SET_VIDEO_DATA';
 export const setVideosData = (videos) => {
@@ -9,14 +8,13 @@ export const setVideosData = (videos) => {
         videos
     }
 }
+
 const ERASE_VIDEO_DATA = 'ERASE_VIDEO_DATA';
 export const eraseVideoData = () => {
     return {
         type: ERASE_VIDEO_DATA,
-
     }
 }
-
 
 let initialState = {
     videos: [],
@@ -25,6 +23,7 @@ let initialState = {
         'Cartoons': 2
     }]
 }
+
 let loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_VIDEO_DATA:
@@ -50,6 +49,7 @@ export const getVideos = (video_type, language_id, page, api_key) => {
         }
     }
 }
+
 export const eraseVideos = () => {
     return (dispathc) => {
         dispathc(eraseVideoData())

@@ -8,7 +8,7 @@ import {
     IonText, IonThumbnail, IonToolbar
 } from "@ionic/react";
 import {readFromStorage} from "../../api/deviceStorageApi";
-import {videoApi} from "../../api/appApi";
+import {addWatchCount, videoApi} from "../../api/appApi";
 import {useHistory} from "react-router";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {IoMdArrowBack} from "react-icons/all";
@@ -63,7 +63,16 @@ const VideoPlayer = React.memo(() => {
     // console.log(showedVideo)
     // youtube.openVideo()
     //https://www.youtube.com/embed/CRXAKiXFfuc
+    const addWatchCnt= async (video_id, apikey)=>{
+        let response= await addWatchCount.addWatch(video_id,apikey)
+        if(response){
+            // alert(JSON.stringify(response))
 
+            // window.location.assign('/videoplayer')
+        }
+    }
+
+    //component Video
     const Video = (props) => {
         return (
             <iframe
@@ -78,8 +87,12 @@ const VideoPlayer = React.memo(() => {
     let sameVideos
     if (sameTypeVideo) {
         sameVideos = sameTypeVideo.map((value, key) =>
-            (<IonList key={key} onClick={() => {
+            (
+                <IonList key={key}
+                      onClick={() => {
                 setShowedVideo(value.youtube_id)
+                          // console.log(value)
+                addWatchCnt(value.id, apiKey)
             }}>
                 <IonItem>
                     <IonCol size='2'>

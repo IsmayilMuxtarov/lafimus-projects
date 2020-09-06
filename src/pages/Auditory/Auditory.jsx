@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import style from './Auditory.module.css';
-import film from '../../assets/img/film.png'
-import cartoon from '../../assets/img/cartoon.png'
+import film from '../../assets/img/film1.png'
+import cartoon from '../../assets/img/cartoon1.png'
+import lessons from '../../assets/img/Language.png'
 
 import {
     IonCol,
@@ -12,6 +13,7 @@ import {
     IonPage,
     IonRow, IonText, IonTitle, IonToolbar
 } from "@ionic/react";
+
 import {readFromStorage, saveToStorage} from "../../api/deviceStorageApi";
 import {useHistory} from "react-router";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
@@ -19,13 +21,38 @@ import {connect} from "react-redux";
 import {eraseVideos} from "../../redux/videoGlaryReducer";
 import { IoMdArrowBack} from "react-icons/all";
 import {Plugins} from "@capacitor/core";
-// import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 import { AdOptions, AdSize, AdPosition } from 'capacitor-admob';
+import {useStorage} from "@ionic/react-hooks/storage";
 const { AdMob, Toast } = Plugins;
 const { App } = Plugins;
 
+// const PHOTO_STORAGE = "photos";
+// export function usePhotoGallery() {}
+
+// const { get, set } = useStorage();
+
 const Auditory = (props) => {
+
+    // useEffect(() => {
+    //     const loadSaved = async () => {
+    //         const photosString = await get(PHOTO_STORAGE);
+    //         const photos = (photosString ? JSON.parse(photosString) : []) as Photo[];
+    //         for (let photo of photos) {
+    //             const file = await readFile({
+    //                 path: photo.filepath,
+    //                 directory: FilesystemDirectory.Data
+    //             });
+    //             photo.base64 = `data:image/jpeg;base64,${file.data}`;
+    //         }
+    //         setPhotos(photos);
+    //     };
+    //     loadSaved();
+    // }, [get, readFile]);
+
+
+
     // AdMob.initialize('ca-app-pub-9026860289947957/7169746763');
+
     AdMob.initialize('ca-app-pub-9026860289947957~9632258574');
     const options = {
         adId: 'ca-app-pub-9026860289947957/7169746763',
@@ -35,6 +62,7 @@ const Auditory = (props) => {
         hasTabBar: true,  // make it true if you have TabBar Layout.
         tabBarHeight: 56  // you can assign custom margin in pixel default is 56
     };
+
     const showBanner=()=>{
         AdMob.showBanner(options)
             .then(
@@ -49,7 +77,6 @@ const Auditory = (props) => {
                     console.error(error); // show error
                 }
             );
-
     }
     AdMob.addListener('onAdLoaded', async (info) => {
        // alert('Showing TabBar Banner AD.');
@@ -68,6 +95,7 @@ const Auditory = (props) => {
             }
         );
     }
+
     App.addListener('backButton', (e) => {
         window.location.assign('/language')
     });
@@ -75,6 +103,7 @@ const Auditory = (props) => {
     let screenOrientation = ScreenOrientation
     screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT)
     let history = useHistory()
+
     const [selectedAuditory, setSelectedAuditory] = useState(null)
 
     const loadAuditory = async () => {
@@ -83,16 +112,17 @@ const Auditory = (props) => {
             setSelectedAuditory(data)
         }
     }
-    const saveFilms = () => {
-        saveToStorage('auditory_id', 1)
-    }
-    const saveCartoons = () => {
-        saveToStorage('auditory_id', 2)
-    }
+    // const saveFilms = () => {
+    //     saveToStorage('auditory_id', 1)
+    // }
+    // const saveCartoons = () => {
+    //     saveToStorage('auditory_id', 2)
+    // }
+    // const saveLessons = () => {
+    //     saveToStorage('auditory_id', 2)
+    // }
     useEffect(() => {
-
         if (selectedAuditory) {
-
         } else {
             loadAuditory()
         }
@@ -100,16 +130,14 @@ const Auditory = (props) => {
     useEffect(()=>{
         // alert('ok')
         showBanner()
+        saveToStorage('last_page_size',1)
         props.eraseVideos()
     },[])
     return (
         <IonPage>
             <IonHeader className='ion-text-center'>
                 <IonToolbar>
-                    {/*<IonTitle  className={style.font}>*/}
-                    {/*    Please Select*/}
-                    {/*</IonTitle>*/}
-                    <div className={style.header_area}>
+                   <div className={style.header_area}>
                         {/*<label className={style.header_back_arrow}*/}
                         {/*       onClick={() => {*/}
                         {/*           window.location.assign('/language')*/}
@@ -125,10 +153,8 @@ const Auditory = (props) => {
                         </div>
                     </div>
                 </IonToolbar>
-
             </IonHeader>
             <IonContent>
-
                 <div className={style.content}>
                     <IonCol className={style.auditory_slogan}>
                         <IonText className={style.auditory_slogan_text}>
@@ -139,11 +165,32 @@ const Auditory = (props) => {
                              style={{backgroundColor: 'transparent'}}
                     >
                         <IonRow>
+                            <IonCol
+                                onClick={
+                                    () => {
+                                        // saveFilms()
+                                        saveToStorage('auditory_id', 3)
+                                        hideBanner()
+                                        setSelectedAuditory(3)
+                                        window.location.assign('/videogalary')
+                                    }
+                                }
+                                className='ion-text-center'
+                            >
+                                <IonImg
+                                    className={style.logo}
+                                    src={lessons}/>
+                                <IonLabel
+                                    className={selectedAuditory == 3 && style.active}
+                                >Lessons</IonLabel>
+                            </IonCol>
+                        </IonRow>
+                        <IonRow>
                          <div className={style.logos}>
                              <IonCol
                                  onClick={
                                      () => {
-                                         saveFilms()
+                                         saveToStorage('auditory_id', 1)
                                          hideBanner()
                                          setSelectedAuditory(1)
                                          window.location.assign('/videogalary')
@@ -161,7 +208,7 @@ const Auditory = (props) => {
                              <IonCol
                                  onClick={
                                      ()=>{
-                                         saveCartoons()
+                                         saveToStorage('auditory_id', 2)
                                          hideBanner()
                                          setSelectedAuditory(2)
                                          window.location.assign('/videogalary')

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-// import style from './App.css';
 import './theme/variables.css';
 import {
     IonApp,
@@ -8,12 +7,10 @@ import {
 import {IonReactRouter} from "@ionic/react-router";
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-
 /* Optional CSS utils that can be commented out */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
@@ -31,7 +28,6 @@ import Login from "./pages/Login/Login";
 import CountryContainer from "./pages/Country/CountryContainer";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {readFromStorage} from "./api/deviceStorageApi";
-// import Test from "./pages/Test";
 import LoginContainer from "./pages/Login/LoginContainer";
 import { browserHistory } from './pages/History';
 import About from "./pages/About/About";

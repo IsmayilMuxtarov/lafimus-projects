@@ -19,6 +19,7 @@ export const removeFromStorage = async (key) => {
         key: key
     })
 }
+
 export const clearAll = async () => {
         await Storage.clear();
 }
